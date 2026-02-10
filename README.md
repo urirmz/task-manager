@@ -111,20 +111,6 @@ Content-Type: application/json
 }
 ```
 
-**Response:**
-
-```json
-{
-  "success": true,
-  "user": {
-    "id": 2,
-    "username": "manager",
-    "name": "Manager User",
-    "role": "MANAGER"
-  }
-}
-```
-
 #### Logout
 
 ```http
@@ -200,22 +186,6 @@ GET /api/tasks/export
 GET /api/users
 ```
 
-**Response:**
-
-```json
-{
-  "apiStatus": "SUCCESS",
-  "users": [
-    {
-      "id": 1,
-      "username": "admin",
-      "name": "Admin User",
-      "role": "ADMIN"
-    }
-  ]
-}
-```
-
 ## Workflow Logic
 
 ### Task Lifecycle
@@ -254,8 +224,8 @@ GET /api/users
 | ------------ | ---- | ------- | ----- |
 | Create Task  | ✓    | ✓       | ✓     |
 | View Tasks   | ✓    | ✓       | ✓     |
-| Approve Task | ✗    | ✓       | ✓     |
-| Reject Task  | ✗    | ✓       | ✓     |
+| Approve Task | ✗    | ✓       | ✗     |
+| Reject Task  | ✗    | ✓       | ✗     |
 
 ## Testing
 
