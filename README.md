@@ -49,7 +49,7 @@ A form-based web application for creating, managing, and approving tasks or book
 
 ```bash
 git clone <repository-url>
-cd task-manager
+cd task_manager
 ```
 
 ### 2. Build the Project
