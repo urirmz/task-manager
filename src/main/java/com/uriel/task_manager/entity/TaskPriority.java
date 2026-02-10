@@ -1,4 +1,7 @@
 package com.uriel.task_manager.entity;
 
-public class TaskPriority {
+public enum TaskPriority {
+    LOW,
+    MEDIUM,
+    HIGH
 }

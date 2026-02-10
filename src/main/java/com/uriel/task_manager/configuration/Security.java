@@ -39,7 +39,7 @@ public class Security {
                 .authorizeHttpRequests(authorization -> authorization
                         .requestMatchers(PathRequest.toH2Console()).permitAll() // For debug purposes
                         .requestMatchers("/", "/index.html", "/styles.css", "/app.js", "/api/authorization/login").permitAll()
-                        .requestMatchers("/api/tasks/{id}/approve", "/api/tasks/{id}/reject").hasRole("ADMIN")
+                        .requestMatchers("/api/tasks/{id}/approve", "/api/tasks/{id}/reject").hasRole("MANAGER")
                         .anyRequest().authenticated())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)

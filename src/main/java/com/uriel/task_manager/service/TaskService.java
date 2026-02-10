@@ -3,7 +3,6 @@ package com.uriel.task_manager.service;
 import com.uriel.task_manager.dto.TaskRequest;
 import com.uriel.task_manager.entity.Task;
 import com.uriel.task_manager.entity.TaskStatus;
-import com.uriel.task_manager.entity.UserRole;
 import com.uriel.task_manager.repository.TaskRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,13 @@ public class TaskService {
     }
 
     @Transactional
-    public Task createTask(TaskRequest request, Long createdBy) {
+    public Task createTask(TaskRequest request) {
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setPriority(request.getPriority());
         task.setAssignedUserId(request.getAssignedUserId());
+        task.setScheduledDateTime(request.getScheduledDateTime());
         task.setStatus(TaskStatus.PENDING);
 
         Task savedTask = taskRepository.save(task);
@@ -50,11 +50,7 @@ public class TaskService {
     }
 
     @Transactional
-    public Task approveTask(Long taskId, UserRole userRole) {
-        if (userRole != UserRole.MANAGER && userRole != UserRole.ADMIN) {
-            throw new RuntimeException("Only Managers and Admins can approve tasks");
-        }
-
+    public Task approveTask(Long taskId) {
         Task task = getTaskById(taskId);
         task.setStatus(TaskStatus.APPROVED);
         Task updatedTask = taskRepository.save(task);
@@ -64,11 +60,7 @@ public class TaskService {
     }
 
     @Transactional
-    public Task rejectTask(Long taskId, UserRole userRole) {
-        if (userRole != UserRole.MANAGER && userRole != UserRole.ADMIN) {
-            throw new RuntimeException("Only Managers and Admins can reject tasks");
-        }
-
+    public Task rejectTask(Long taskId) {
         Task task = getTaskById(taskId);
         task.setStatus(TaskStatus.REJECTED);
         Task updatedTask = taskRepository.save(task);

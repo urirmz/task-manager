@@ -2,7 +2,6 @@ package com.uriel.task_manager.service;
 
 import com.uriel.task_manager.entity.TaskPriority;
 import com.uriel.task_manager.entity.TaskStatus;
-import com.uriel.task_manager.entity.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.uriel.task_manager.dto.TaskRequest;
 import com.uriel.task_manager.entity.Task;
 import com.uriel.task_manager.repository.TaskRepository;
-import com.uriel.task_manager.service.TaskService;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +42,6 @@ class TaskServiceTest {
         testTask.setDescription("Test Description");
         testTask.setPriority(TaskPriority.HIGH);
         testTask.setStatus(TaskStatus.PENDING);
-        testTask.setCreatedBy(1L);
         testTask.setCreatedDate(LocalDateTime.now());
 
         taskRequest = new TaskRequest();
@@ -59,7 +55,7 @@ class TaskServiceTest {
     void testCreateTask() {
         when(taskRepository.save(any(Task.class))).thenReturn(testTask);
 
-        Task createdTask = taskService.createTask(taskRequest, 1L);
+        Task createdTask = taskService.createTask(taskRequest);
 
         assertNotNull(createdTask);
         assertEquals(TaskStatus.PENDING, createdTask.getStatus());
@@ -109,48 +105,26 @@ class TaskServiceTest {
     }
 
     @Test
-    void testApproveTaskAsManager() {
+    void testApproveTask() {
         when(taskRepository.findById(1L)).thenReturn(Optional.of(testTask));
         when(taskRepository.save(any(Task.class))).thenReturn(testTask);
 
-        Task result = taskService.approveTask(1L, UserRole.MANAGER);
+        Task result = taskService.approveTask(1L);
         assertNotNull(result);
         assertEquals(TaskStatus.APPROVED, result.getStatus());
         verify(taskRepository, times(1)).save(any(Task.class));
     }
 
     @Test
-    void testApproveTaskAsAdmin() {
+    void testRejectTask() {
         when(taskRepository.findById(1L)).thenReturn(Optional.of(testTask));
         when(taskRepository.save(any(Task.class))).thenReturn(testTask);
 
-        Task result = taskService.approveTask(1L, UserRole.ADMIN);
-        assertNotNull(result);
-        assertEquals(TaskStatus.APPROVED, result.getStatus());
-        verify(taskRepository, times(1)).save(any(Task.class));
-    }
-
-    @Test
-    void testApproveTaskAsUserShouldFail() {
-        assertThrows(RuntimeException.class, () -> taskService.approveTask(1L, UserRole.USER));
-        verify(taskRepository, never()).save(any(Task.class));
-    }
-
-    @Test
-    void testRejectTaskAsManager() {
-        when(taskRepository.findById(1L)).thenReturn(Optional.of(testTask));
-        when(taskRepository.save(any(Task.class))).thenReturn(testTask);
-
-        Task result = taskService.rejectTask(1L, UserRole.MANAGER);
+        Task result = taskService.rejectTask(1L);
 
         assertNotNull(result);
         assertEquals(TaskStatus.REJECTED, result.getStatus());
         verify(taskRepository, times(1)).save(any(Task.class));
     }
 
-    @Test
-    void testRejectTaskAsUserShouldFail() {
-        assertThrows(RuntimeException.class, () -> taskService.rejectTask(1L, UserRole.USER));
-        verify(taskRepository, never()).save(any(Task.class));
-    }
 }

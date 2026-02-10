@@ -1,4 +1,7 @@
 package com.uriel.task_manager.entity;
 
-public class UserRole {
+public enum UserRole {
+    USER,
+    MANAGER,
+    ADMIN
 }

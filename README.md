@@ -17,7 +17,7 @@ A form-based web application for creating, managing, and approving tasks or book
 
 - **USER** - Can create and view tasks
 - **MANAGER** - Can approve/reject tasks + all USER permissions
-- **ADMIN** - Full system access + all MANAGER permissions
+- **ADMIN** - Full system access, except approve/reject tasks
 
 ## Technology Stack
 
@@ -204,17 +204,15 @@ PUT /api/tasks/{id}/reject
 1. **Task Creation**
    - Any authenticated user can create a task
    - New tasks start with `PENDING` status
-   - Creator is automatically recorded
 
 2. **Task Approval/Rejection**
-   - Only users with `MANAGER` or `ADMIN` role can approve/reject
+   - Only users with `MANAGER` role can approve/reject
    - Tasks must be in `PENDING` status to be approved/rejected
    - Once approved/rejected, status cannot be changed (in current implementation)
 
 3. **Notifications**
    - When a task is approved/rejected, a notification is logged to the console
    - Format: `✓ NOTIFICATION: Task 'Title' has been APPROVED`
-   - In production, this could be replaced with email/SMS notifications
 
 ### Role-Based Authorization
 

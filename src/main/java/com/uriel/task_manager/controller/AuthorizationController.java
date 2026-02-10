@@ -55,35 +55,6 @@ public class AuthorizationController {
                 "role", user.getRole().name()));
 
         return ResponseEntity.ok(response);
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(
-//                            loginRequest.getUsername(),
-//                            loginRequest.getPassword()));
-//
-//            SecurityContext securityContext = SecurityContextHolder.getContext();
-//            securityContext.setAuthentication(authentication);
-//
-//            HttpSession session = request.getSession(true);
-//            session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
-//
-//            User user = userService.findByUsername(loginRequest.getUsername());
-//
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("success", true);
-//            response.put("user", Map.of(
-//                    "id", user.getId(),
-//                    "username", user.getUsername(),
-//                    "name", user.getName(),
-//                    "role", user.getRole().name()));
-//
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("success", false);
-//            response.put("message", "Invalid username or password");
-//            return ResponseEntity.status(401).body(response);
-//        }
     }
 
     @PostMapping("/logout")

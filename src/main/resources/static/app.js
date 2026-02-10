@@ -268,7 +268,7 @@ function displayTasks(tasks) {
 }
 
 function createTaskCard(task) {
-    const canApprove = currentUser.role === 'MANAGER' || currentUser.role === 'ADMIN';
+    const canApprove = currentUser.role === 'MANAGER';
     const isPending = task.status === 'PENDING';
     const showActions = canApprove && isPending;
     

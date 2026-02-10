@@ -7,7 +7,7 @@ INSERT INTO users (username, password, name, role) VALUES
 ('user2', '$2a$12$DRk37o4RmlG.YXwoDv6eieSS76tlMPHipg4H8IrRIfvSAbTHCNRiy', 'Nancy Kennedy', 'USER');
 
 -- Insert sample tasks
-INSERT INTO tasks (title, description, status, assigned_user_id, scheduled_date_time, created_date) VALUES
+INSERT INTO tasks (title, description, scheduled_date_time, priority, status, assigned_user_id, created_date) VALUES
 ('Setup Development Environment', 'Install and configure all necessary development tools', '2026-02-15 10:00:00', 'HIGH', 'PENDING', 3, CURRENT_TIMESTAMP),
 ('Review Code Changes', 'Review pull requests from last week', '2026-02-12 14:00:00', 'MEDIUM', 'PENDING', 2, CURRENT_TIMESTAMP),
 ('Update Documentation', 'Update API documentation with new endpoints', '2026-02-20 09:00:00', 'LOW', 'APPROVED', 3, CURRENT_TIMESTAMP),
