@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager - Create, Manage & Approve Tasks</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="loginSection" class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <h1>Task Manager</h1>
+          <p>Streamline your workflow with intelligent task management</p>
+        </div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              placeholder="Enter your username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Sign In
+          </button>
+          <div id="loginError" class="error-message"></div>
+        </form>
+        <div class="login-footer">
+          <p><strong>Demo Credentials:</strong></p>
+          <p>Admin: <code>admin / password</code></p>
+          <p>Manager: <code>manager / password</code></p>
+          <p>User: <code>user1 / password</code></p>
+          <p>User: <code>user2 / password</code></p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="dashboardSection"
+      class="dashboard-container"
+      style="display: none"
+    >
+      <header class="dashboard-header">
+        <div class="header-content">
+          <h1>Task Manager</h1>
+          <div class="user-info">
+            <span id="userGreeting"></span>
+            <span class="user-role" id="userRole"></span>
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard-main">
+        <div class="stats-container">
+          <div class="stat-card stat-pending">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-content">
+              <h3 id="pendingCount">0</h3>
+              <p>Pending Tasks</p>
+            </div>
+          </div>
+          <div class="stat-card stat-approved">
+            <div class="stat-icon">✓</div>
+            <div class="stat-content">
+              <h3 id="approvedCount">0</h3>
+              <p>Approved Tasks</p>
+            </div>
+          </div>
+          <div class="stat-card stat-rejected">
+            <div class="stat-icon">✗</div>
+            <div class="stat-content">
+              <h3 id="rejectedCount">0</h3>
+              <p>Rejected Tasks</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" onclick="toggleCreateForm()">
+            <h2>Create New Task</h2>
+            <span class="toggle-icon" id="toggleIcon">▼</span>
+          </div>
+          <div class="card-body" id="createTaskForm" style="display: none">
+            <form id="taskForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="taskTitle">Title *</label>
+                  <input
+                    type="text"
+                    id="taskTitle"
+                    required
+                    placeholder="Enter task title"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="taskPriority">Priority *</label>
+                  <select id="taskPriority" required>
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM" selected>Medium</option>
+                    <option value="HIGH">High</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="taskDescription">Description</label>
+                <textarea
+                  id="taskDescription"
+                  rows="3"
+                  placeholder="Enter task description"
+                ></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="taskDateTime">Scheduled Date & Time</label>
+                  <input type="datetime-local" id="taskDateTime" />
+                </div>
+                <div class="form-group">
+                  <label for="assignedUser">Assign To</label>
+                  <select id="assignedUser">
+                    <option value="">Unassigned</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Create Task</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Tasks</h2>
+            <div class="filter-controls">
+              <select id="statusFilter" class="filter-select">
+                <option value="">All Tasks</option>
+                <option value="PENDING">Pending</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+              </select>
+              <select id="sortBy" class="filter-select">
+                <option value="date">Sort by Date</option>
+                <option value="priority">Sort by Priority</option>
+              </select>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="taskList" class="task-list">
+              <p class="loading">Loading tasks...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
