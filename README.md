@@ -10,8 +10,10 @@ A form-based web application for creating, managing, and approving tasks or book
 - ✅ **Dashboard** - View pending, approved, and rejected tasks at a glance
 - ✅ **Task Creation** - Create tasks with title, description, date/time, priority, and assignment
 - ✅ **Task List** - Filter by status and sort by date or priority
+- ✅ **Task Calendar** - Calendar view for tasks
 - ✅ **Approval Workflow** - Manager/Admin role-based approval system
 - ✅ **Notifications** - Console log notifications for task status changes
+- ✅ **Export CSV** - Export task lists to CSV format for external analysis
 
 ### Role-Based Access Control
 
@@ -40,7 +42,6 @@ A form-based web application for creating, managing, and approving tasks or book
 ## Prerequisites
 
 - **Java 21 or higher**
-- **Maven 3.6+**
 
 ## Setup Instructions
 
@@ -88,10 +89,11 @@ http://localhost:8080/h2-console
 The application comes preloaded with sample users for testing:
 
 | Username | Password | Role    |
-|----------|----------|---------|
+| -------- | -------- | ------- |
 | admin    | password | ADMIN   |
 | manager  | password | MANAGER |
-| user     | password | USER    |
+| user1    | password | USER    |
+| user2    | password | USER    |
 
 ## API Documentation
 
@@ -100,7 +102,7 @@ The application comes preloaded with sample users for testing:
 #### Login
 
 ```http
-POST /api/auth/login
+POST /api/authorization/login
 Content-Type: application/json
 
 {
@@ -126,13 +128,13 @@ Content-Type: application/json
 #### Logout
 
 ```http
-POST /api/auth/logout
+POST /api/authorization/logout
 ```
 
 #### Get Current User
 
 ```http
-GET /api/auth/current
+GET /api/authorization/current
 ```
 
 ### Task Endpoints
@@ -182,6 +184,38 @@ PUT /api/tasks/{id}/approve
 PUT /api/tasks/{id}/reject
 ```
 
+#### Export Tasks to CSV
+
+```http
+GET /api/tasks/export
+```
+
+**Response:** Returns a `.csv` file attachment containing all tasks.
+
+### User Endpoints
+
+#### Get All Users
+
+```http
+GET /api/users
+```
+
+**Response:**
+
+```json
+{
+  "apiStatus": "SUCCESS",
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "name": "Admin User",
+      "role": "ADMIN"
+    }
+  ]
+}
+```
+
 ## Workflow Logic
 
 ### Task Lifecycle
@@ -217,7 +251,7 @@ PUT /api/tasks/{id}/reject
 ### Role-Based Authorization
 
 | Action       | USER | MANAGER | ADMIN |
-|--------------|------|---------|-------|
+| ------------ | ---- | ------- | ----- |
 | Create Task  | ✓    | ✓       | ✓     |
 | View Tasks   | ✓    | ✓       | ✓     |
 | Approve Task | ✗    | ✓       | ✓     |
