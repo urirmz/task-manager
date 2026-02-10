@@ -3,22 +3,30 @@ package com.uriel.task_manager.service;
 import com.uriel.task_manager.dto.TaskRequest;
 import com.uriel.task_manager.entity.Task;
 import com.uriel.task_manager.entity.TaskStatus;
+import com.uriel.task_manager.entity.User;
 import com.uriel.task_manager.repository.TaskRepository;
+import com.uriel.task_manager.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class TaskService {
 
+    private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
+
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -27,12 +35,18 @@ public class TaskService {
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setPriority(request.getPriority());
-        task.setAssignedUserId(request.getAssignedUserId());
+
+        if (request.getAssignedUserId() != null) {
+            User user = userRepository.findById(request.getAssignedUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + request.getAssignedUserId()));
+            task.setAssignedUser(user);
+        }
+
         task.setScheduledDateTime(request.getScheduledDateTime());
         task.setStatus(TaskStatus.PENDING);
 
         Task savedTask = taskRepository.save(task);
-        System.out.println("✓ Task created: " + savedTask.getTitle() + " (ID: " + savedTask.getId() + ")");
+        logger.info("✓ Task created: {} (ID: {})", savedTask.getTitle(), savedTask.getId());
         return savedTask;
     }
 
@@ -55,7 +69,7 @@ public class TaskService {
         task.setStatus(TaskStatus.APPROVED);
         Task updatedTask = taskRepository.save(task);
 
-        System.out.println("✓ NOTIFICATION: Task '" + updatedTask.getTitle() + "' has been APPROVED");
+        logger.info("✓ NOTIFICATION: Task '{}' has been APPROVED", updatedTask.getTitle());
         return updatedTask;
     }
 
@@ -65,7 +79,7 @@ public class TaskService {
         task.setStatus(TaskStatus.REJECTED);
         Task updatedTask = taskRepository.save(task);
 
-        System.out.println("✗ NOTIFICATION: Task '" + updatedTask.getTitle() + "' has been REJECTED");
+        logger.info("✗ NOTIFICATION: Task '{}' has been REJECTED", updatedTask.getTitle());
         return updatedTask;
     }
 

@@ -25,8 +25,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
-    @Column(name = "assigned_user_id")
-    private Long assignedUserId;
+    @ManyToOne
+    @JoinColumn(name = "assigned_user_id")
+    private User assignedUser;
 
     @Column(name = "scheduled_date_time")
     private LocalDateTime scheduledDateTime;
@@ -82,12 +83,12 @@ public class Task {
         this.priority = priority;
     }
 
-    public Long getAssignedUserId() {
-        return assignedUserId;
+    public User getAssignedUser() {
+        return assignedUser;
     }
 
-    public void setAssignedUserId(Long assignedUserId) {
-        this.assignedUserId = assignedUserId;
+    public void setAssignedUser(User assignedUser) {
+        this.assignedUser = assignedUser;
     }
 
     public LocalDateTime getScheduledDateTime() {
@@ -117,13 +118,13 @@ public class Task {
                 Objects.equals(title, task.title) &&
                 Objects.equals(description, task.description) &&
                 status == task.status &&
-                Objects.equals(assignedUserId, task.assignedUserId) &&
+                Objects.equals(assignedUser, task.assignedUser) &&
                 Objects.equals(createdDate, task.createdDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, status, assignedUserId, createdDate);
+        return Objects.hash(id, title, description, status, assignedUser, createdDate);
     }
 
     @Override
@@ -133,7 +134,7 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", assignedUserId=" + assignedUserId +
+                ", assignedUser=" + (assignedUser != null ? assignedUser.getUsername() : "null") +
                 ", createdDate=" + createdDate +
                 '}';
     }
